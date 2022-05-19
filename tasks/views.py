@@ -14,7 +14,7 @@ def index(request):
 def tasks(request):
     tasks = Task.objects.filter(is_done=False).select_related('category')
     context = {
-        'tasks':tasks
+        'tasks': tasks
     }
     return render(request, 'tasks/tasks_list.html', context)
 
@@ -59,11 +59,6 @@ def edit_task(request, task_id):
     return render(request, 'tasks/create_task.html', context)
 
 
-def task_done(request, task_id):
-    Task.objects.filter(pk=task_id).update(is_done=True)
-    return redirect('tasks:task_list', param='all_task')
-
-
 @login_required
 def create_task(request):
     form = TaskForm(request.POST or None)
@@ -95,8 +90,8 @@ def create_category(request):
 
 def filter_tasks(request):
     task = Task.objects.filter(
-        Q(is_done=request.GET.get('q', False))|
-        Q(coming_soon_task=request.GET.get('s', False))|
+        Q(is_done=request.GET.get('q', False)) |
+        Q(coming_soon_task=request.GET.get('s', False)) |
         Q(is_done=request.GET.get('all_task', False))
     )
     return render(request, 'tasks/tasks_list.html', {'tasks': task})
