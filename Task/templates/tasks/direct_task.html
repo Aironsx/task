@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+      <div class="col-sm-2">
+        {% include 'includes/sidebar.html' %}
+      </div>
+      <div class="col-sm-8 ">
+          <div class="card my-lg-4">
+            <div class="card-header ">
+              Task name: {{ task.topic }}
+            </div>
+            <div class="card-body mb-2 my-lg-4 ">
+              <p class="card-text">{{ task.description }}</p>
+              <a href="{% url 'tasks:edit_task' task.pk %}" class="btn
+              btn-primary
+              btn-dark">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

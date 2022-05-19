@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main>
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">Start with Todo to make your life
+        easier</h1>
+      <div class="col-lg-6 mx-auto">
+        <hr class="col-3 col-md-12 mb-5">
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          {% if user.is_authenticated %}
+            <a class="btn btn-outline-dark btn-lg px-5 gap-3"
+               href="{% url 'tasks:task_list'%}"
+               role="button">Start</a>
+          {% else %}
+            <a class="btn btn-outline-dark btn-lg px-5 gap-3"
+               href="{% url 'users:signup' %}" role="button">Sign in</a>
+            <a class="btn btn-outline-dark btn-lg px-5 gap-3"
+               href="{% url 'users:login' %}" role="button">Log in</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+    <div class="col-sm-2">
+      {% include 'includes/sidebar.html' %}
+    </div>
+    <div class="col-sm-8 ">
+      <div class="container">
+        {% for task in tasks %}
+          <div class="card  my-lg-4">
+            <div class="card-header ">
+              Task name: {{ task.topic }}
+              {{ task.due_date }}
+            </div>
+            <div class="card-body mb-2 my-lg-4 ">
+              <p class="card-text ">
+                {{ task.description|truncatewords:50 }}</p>
+              {% if task.due_date %}
+                <p class="card-text ">Due
+                  date {{ task.due_date }}</p>
+              {% endif %}
+            </div>
+          <div class="card-body mb-2 my-lg-4 ">
+                        <a href="{% url 'tasks:task_done' task.pk %}" class="btn
+              btn-dark">Done</a>
+              <a href="{% url 'tasks:task' task.pk %}" class="btn btn-primary
+                btn-dark">Read</a>
+          </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}
