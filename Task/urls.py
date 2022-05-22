@@ -7,5 +7,5 @@ urlpatterns = [
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('about/', include('about.urls', namespace='about')),
-    path('api.', include('api.urls', namespace='api'))
+    path('api/', include('api.urls', namespace='api'))
 ]

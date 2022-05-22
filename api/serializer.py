@@ -4,8 +4,12 @@ from tasks.models import Task, Category
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(read_only=True)
-    category = serializers.SlugRelatedField()
+    author = serializers.SlugRelatedField(read_only=True,
+                                          slug_field='username',)
+    category = serializers.SlugRelatedField(required=False,
+                                            slug_field='name',
+                                            read_only=True
+                                            )
 
     class Meta:
         model = Task

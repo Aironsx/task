@@ -61,7 +61,7 @@ def edit_task(request, task_id):
 
 def task_done(request, task_id):
     Task.objects.filter(pk=task_id).update(is_done=True)
-    return redirect('tasks:task_list', param='all_task')
+    return redirect('tasks:task_list')
 
 
 @login_required
@@ -71,7 +71,7 @@ def create_task(request):
         task = form.save(commit=False)
         task.author = request.user
         task.save()
-        return redirect('tasks:task_list', param='all_task')
+        return redirect('tasks:task_list')
     context = {
         'form': form,
     }
