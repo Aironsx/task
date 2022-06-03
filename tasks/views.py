@@ -1,102 +1,88 @@
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import (TemplateView, View, ListView, CreateView,
+                                  UpdateView)
 
 from .forms import CategoryForm, TaskForm
 from .models import Category, Task
 
 
-def index(request):
-    return render(request, 'tasks/index.html')
+class IndexView(TemplateView):
+    template_name = 'tasks/index.html'
 
 
-@login_required
-def tasks(request):
-    tasks = Task.objects.filter(is_done=False).select_related('category')
-    context = {
-        'tasks':tasks
-    }
-    return render(request, 'tasks/tasks_list.html', context)
+class TasksListView(ListView):
+    model = Task
+    template_name = 'tasks/tasks_list.html'
+    context_object_name = 'tasks'
+    queryset = Task.objects.filter(is_done=False).select_related('category')
 
 
-@login_required
-def category_task(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    tasks = category.task.filter(author=request.user)
-    context = {
-        'category': category,
-        'tasks': tasks,
-    }
-    return render(request, 'tasks/task_by_category.html', context)
+class CategoryDetailView(ListView):
+    model = Category
+    template_name = 'tasks/task_by_category.html'
+    context_object_name = 'tasks'
+
+    def get_queryset(self):
+        category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        return category.task.filter(author=self.request.user)
 
 
-@login_required
-def task(request, task_id):
-    task = Task.objects.get(pk=task_id)
-    context = {
-        'task': task
-    }
-    return render(request, 'tasks/direct_task.html', context)
+class TaskDetailView(ListView):
+    model = Task
+    template_name = 'tasks/direct_task.html'
+    context_object_name = 'task'
+
+    def get_queryset(self):
+        return Task.objects.get(pk=self.kwargs['task_id'])
 
 
-@login_required
-def edit_task(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    if request.user != task.author:
-        return redirect(task)
-    is_edit = True
-    form = TaskForm(
-        request.POST or None,
-        instance=task,
-    )
-    context = {
-        'form': form,
-        'is_edit': is_edit
-    }
-    if form.is_valid():
-        form.save()
-        return redirect(task)
-    return render(request, 'tasks/create_task.html', context)
+class TaskUpdateView(UpdateView):
+    form_class = TaskForm
+    template_name = 'tasks/create_task.html'
+    success_url = reverse_lazy('tasks:task_list')
+
+    def get_object(self, queryset=None):
+        return Task.objects.get(pk=self.kwargs['task_id'])
 
 
-def task_done(request, task_id):
-    Task.objects.filter(pk=task_id).update(is_done=True)
-    return redirect('tasks:task_list')
+class TaskDoneView(View):
 
-
-@login_required
-def create_task(request):
-    form = TaskForm(request.POST or None)
-    if form.is_valid():
-        task = form.save(commit=False)
-        task.author = request.user
-        task.save()
+    def get(self, request, task_id):
+        Task.objects.filter(pk=task_id).update(is_done=True)
         return redirect('tasks:task_list')
-    context = {
-        'form': form,
-    }
-    return render(request, 'tasks/create_task.html', context)
 
 
-@login_required
-def create_category(request):
-    form = CategoryForm(request.POST or None)
-    if form.is_valid():
-        category = form.save(commit=False)
+class CreatTaskView(CreateView):
+    form_class = TaskForm
+    template_name = 'tasks/create_task.html'
+    success_url = reverse_lazy('tasks:task_list')
 
-        category.author = request.user
-        category.save()
-        return redirect('tasks:task_list', param='all_task')
-    context = {
-        'form': form,
-    }
-    return render(request, 'tasks/create_category.html', context)
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
-def filter_tasks(request):
-    task = Task.objects.filter(
-        Q(is_done=request.GET.get('q', False))|
-        Q(coming_soon_task=request.GET.get('s', False))|
-        Q(is_done=request.GET.get('all_task', False))
-    )
-    return render(request, 'tasks/tasks_list.html', {'tasks': task})
+class CreatCategoryView(CreateView):
+    form_class = CategoryForm
+    template_name = 'tasks/create_category.html'
+    success_url = reverse_lazy('tasks:task_list')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class TaskFilterView(ListView):
+    model = Task
+    template_name = 'tasks/tasks_list.html'
+    context_object_name = 'tasks'
+
+    def get_queryset(self):
+        task = Task.objects.filter(author=self.request.user).filter(
+            Q(is_done=self.request.GET.get('done', False)) |
+            Q(coming_soon_task=self.request.GET.get('soon', False)) |
+            Q(is_done=self.request.GET.get('all_task', False))
+        )
+        return task

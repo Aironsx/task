@@ -11,13 +11,13 @@
       </li>
       <li class="nav-item ">
         <form action="{% url 'tasks:filter' %}" method="get">
-          <input type="text" name="q" value="True" hidden>
+          <input type="text" name="done" value="True" hidden>
           <input type="submit" value="Done" class="btn btn-default btn-small">
         </form>
       </li>
       <li class="nav-item">
         <form action="{% url 'tasks:filter' %}" method="get">
-          <input type="text" name="s" value="True" hidden>
+          <input type="text" name="soon" value="True" hidden>
           <input type="submit" value="Comming soon" class="btn btn-default
         btn-small">
         </form>

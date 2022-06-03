@@ -11,7 +11,8 @@ class TasksViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerUpdate, permissions.IsAuthenticated)
 
     def get_queryset(self):
-        return Task.objects.filter(is_done=True)
+        if self.kwargs.get('is_done'):
+            return Task.objects.filter(is_done=True)
 
 
     def perform_create(self, serializer):
