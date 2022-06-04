@@ -9,7 +9,7 @@
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
           {% if user.is_authenticated %}
             <a class="btn btn-outline-dark btn-lg px-5 gap-3"
-               href="{% url 'tasks:task_list'%}"
+               href="{% url 'tasks:task_list' request.user.username %}"
                role="button">Start</a>
           {% else %}
             <a class="btn btn-outline-dark btn-lg px-5 gap-3"

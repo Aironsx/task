@@ -3,7 +3,8 @@
   <div class="position-sticky pt-3">
     <ul class="nav flex-column">
       <li class="nav-item ">
-        <form action="{% url 'tasks:task_list' %}" method="get">
+        <form action="{% url 'tasks:task_list' request.user.username %}"
+              method="get">
           <input type="text" name="all_task" value="False" hidden>
           <input type="submit" value="All tasks" class="btn btn-default
           btn-small">

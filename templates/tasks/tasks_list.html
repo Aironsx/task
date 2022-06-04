@@ -23,7 +23,8 @@
           <div class="card-body mb-2 my-lg-4 ">
                         <a href="{% url 'tasks:task_done' task.pk %}" class="btn
               btn-dark">Done</a>
-              <a href="{% url 'tasks:task' task.pk %}" class="btn btn-primary
+              <a href="{% url 'tasks:task' request.user.username task.pk %}"
+                 class="btn btn-primary
                 btn-dark">Read</a>
           </div>
           </div>

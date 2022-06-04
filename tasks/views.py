@@ -9,10 +9,14 @@ from .models import Category, Task
 
 
 class IndexView(TemplateView):
+    """ Start page."""
+
     template_name = 'tasks/index.html'
 
 
 class TasksListView(ListView):
+    """ List of all running tasks."""
+
     model = Task
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'
@@ -20,6 +24,8 @@ class TasksListView(ListView):
 
 
 class CategoryDetailView(ListView):
+    """Tasks list filtered by category."""
+
     model = Category
     template_name = 'tasks/task_by_category.html'
     context_object_name = 'tasks'
@@ -30,6 +36,8 @@ class CategoryDetailView(ListView):
 
 
 class TaskDetailView(ListView):
+    """ Full task description."""
+
     model = Task
     template_name = 'tasks/direct_task.html'
     context_object_name = 'task'
@@ -39,6 +47,8 @@ class TaskDetailView(ListView):
 
 
 class TaskUpdateView(UpdateView):
+    """Update task."""
+
     form_class = TaskForm
     template_name = 'tasks/create_task.html'
     success_url = reverse_lazy('tasks:task_list')
@@ -48,6 +58,7 @@ class TaskUpdateView(UpdateView):
 
 
 class TaskDoneView(View):
+    """Change task status to done."""
 
     def get(self, request, task_id):
         Task.objects.filter(pk=task_id).update(is_done=True)
@@ -55,6 +66,8 @@ class TaskDoneView(View):
 
 
 class CreatTaskView(CreateView):
+    """Create new task."""
+
     form_class = TaskForm
     template_name = 'tasks/create_task.html'
     success_url = reverse_lazy('tasks:task_list')
@@ -65,6 +78,8 @@ class CreatTaskView(CreateView):
 
 
 class CreatCategoryView(CreateView):
+    """Create new category."""
+
     form_class = CategoryForm
     template_name = 'tasks/create_category.html'
     success_url = reverse_lazy('tasks:task_list')
@@ -75,6 +90,8 @@ class CreatCategoryView(CreateView):
 
 
 class TaskFilterView(ListView):
+    """Filter task."""
+
     model = Task
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'

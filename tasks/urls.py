@@ -7,15 +7,14 @@ app_name = 'tasks'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    # path('tasks/', views.tasks, name='task_list'),
+    # path('task/<str:username>/', views.TestView.as_view(), name='test'),
     path(
-        'tasks/',
+        'tasks/<str:username>/',
         login_required(views.TasksListView.as_view()),
         name='task_list'
     ),
-    # path('tasks/<int:task_id>/', views.task, name='task'),
     path(
-        'tasks/<int:task_id>/',
+        'tasks/<str:username>/<int:task_id>/',
         login_required(views.TaskDetailView.as_view()),
         name='task'
     ),
@@ -44,7 +43,6 @@ urlpatterns = [
         login_required(views.CategoryDetailView.as_view()),
         name='category'
     ),
-    # path('category/<slug:slug>/', views.category_task, name='category'),
     path(
         'tasks/filter/',
         login_required(views.TaskFilterView.as_view()),
