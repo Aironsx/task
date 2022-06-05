@@ -13,6 +13,11 @@ urlpatterns = [
         name='filter'
     ),
     path(
+        '<str:username>/category/delete/<slug:slug>',
+        login_required(views.CategoryDeleteView.as_view()),
+        name='delete_category'
+    ),
+    path(
         '<str:username>/category/all',
         login_required(views.CategoriesListView.as_view()),
         name='all_categories'

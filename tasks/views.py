@@ -32,8 +32,9 @@ class CategoryDetailView(ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self):
-        category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return category.task.filter(author=self.request.user)
+        tasks = Task.objects.select_related('category').filter(
+            category__slug__contains=self.kwargs['slug'])
+        return tasks
 
 
 class TaskDetailView(ListView):
@@ -62,6 +63,11 @@ class TaskUpdateView(UpdateView):
             'tasks:task_list',
             kwargs={'username': self.request.user.username}
         )
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskUpdateView, self).get_context_data(**kwargs)
+        context['is_edit'] = 'is_edit'
+        return context
 
 
 class TaskDoneView(View):
@@ -124,3 +130,13 @@ class CategoriesListView(ListView):
 
     def get_queryset(self):
         return Category.objects.filter(author=self.request.user)
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'tasks:task_list',
+            kwargs={'username': self.request.user.username}
+        )
