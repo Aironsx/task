@@ -2,10 +2,11 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (TemplateView, View, ListView, CreateView,
-                                  UpdateView)
+                                  UpdateView, DeleteView)
 
 from .forms import CategoryForm, TaskForm
 from .models import Category, Task
+from .mixin import ObjectCreateMixin
 
 
 class IndexView(TemplateView):
@@ -43,7 +44,7 @@ class TaskDetailView(ListView):
     context_object_name = 'task'
 
     def get_queryset(self):
-        return Task.objects.get(pk=self.kwargs['task_id'])
+        return get_object_or_404(Task, slug=self.kwargs['slug'])
 
 
 class TaskUpdateView(UpdateView):
@@ -54,39 +55,35 @@ class TaskUpdateView(UpdateView):
     success_url = reverse_lazy('tasks:task_list')
 
     def get_object(self, queryset=None):
-        return Task.objects.get(pk=self.kwargs['task_id'])
+        return Task.objects.get(slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'tasks:task_list',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class TaskDoneView(View):
     """Change task status to done."""
 
-    def get(self, request, task_id):
-        Task.objects.filter(pk=task_id).update(is_done=True)
-        return redirect('tasks:task_list')
+    def get(self, request, slug):
+        Task.objects.filter(slug=slug).update(is_done=True)
+        return redirect('tasks:task_list', username=self.request.user.username)
 
 
-class CreatTaskView(CreateView):
+class CreatTaskView(ObjectCreateMixin):
     """Create new task."""
 
     form_class = TaskForm
     template_name = 'tasks/create_task.html'
-    success_url = reverse_lazy('tasks:task_list')
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
 
 
-class CreatCategoryView(CreateView):
+class CreatCategoryView(ObjectCreateMixin):
     """Create new category."""
 
     form_class = CategoryForm
     template_name = 'tasks/create_category.html'
-    success_url = reverse_lazy('tasks:task_list')
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
 
 
 class TaskFilterView(ListView):
@@ -103,3 +100,27 @@ class TaskFilterView(ListView):
             Q(is_done=self.request.GET.get('all_task', False))
         )
         return task
+
+
+class TaskDeleteView(DeleteView):
+    """ Delete task."""
+
+    model = Task
+    template_name = 'tasks/confirm_task_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'tasks:task_list',
+            kwargs={'username': self.request.user.username}
+        )
+
+
+class CategoriesListView(ListView):
+    """Categories list."""
+
+    model = Category
+    template_name = 'tasks/categories_list.html'
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return Category.objects.filter(author=self.request.user)

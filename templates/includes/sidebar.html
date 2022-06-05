@@ -3,7 +3,8 @@
   <div class="position-sticky pt-3">
     <ul class="nav flex-column">
       <li class="nav-item ">
-        <form action="{% url 'tasks:task_list' request.user.username %}"
+        <form action="
+{% url 'tasks:task_list' username=request.user.username %}"
               method="get">
           <input type="text" name="all_task" value="False" hidden>
           <input type="submit" value="All tasks" class="btn btn-default
@@ -11,13 +12,14 @@
         </form>
       </li>
       <li class="nav-item ">
-        <form action="{% url 'tasks:filter' %}" method="get">
+        <form action="{% url 'tasks:filter' request.user.username %}" method="get">
           <input type="text" name="done" value="True" hidden>
           <input type="submit" value="Done" class="btn btn-default btn-small">
         </form>
       </li>
       <li class="nav-item">
-        <form action="{% url 'tasks:filter' %}" method="get">
+        <form action="{% url 'tasks:filter' username=request.user.username %}"
+              method="get">
           <input type="text" name="soon" value="True" hidden>
           <input type="submit" value="Comming soon" class="btn btn-default
         btn-small">
@@ -25,7 +27,8 @@
       </li>
       <hr>
       <li class="nav-item">
-        <a class="nav-link text-dark" href="{% url 'tasks:create_task' %}">
+        <a class="nav-link text-dark" href="
+{% url 'tasks:create_task' %}">
           Create task
         </a>
       </li>
@@ -36,11 +39,14 @@
       </li>
       <hr>
       {% if categories %}
-        <a class="nav-link text-dark"> Category: </a>
+        <a class="nav-link text-dark" href="
+{% url 'tasks:all_categories' username=request.user.username %}"> Category:
+        </a>
         {% for category in categories %}
           <li class="nav-item">
             <a class="nav-link text-dark"
-               href="{% url 'tasks:category' category.slug %}">
+               href="
+{% url 'tasks:category' request.user.username category.slug %}">
               - {{ category }}
             </a>
           </li>

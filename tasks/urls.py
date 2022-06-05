@@ -7,14 +7,23 @@ app_name = 'tasks'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    # path('task/<str:username>/', views.TestView.as_view(), name='test'),
     path(
-        'tasks/<str:username>/',
+        '<str:username>/tasks/filter/',
+        login_required(views.TaskFilterView.as_view()),
+        name='filter'
+    ),
+    path(
+        '<str:username>/category/all',
+        login_required(views.CategoriesListView.as_view()),
+        name='all_categories'
+    ),
+    path(
+        '<str:username>/tasks/',
         login_required(views.TasksListView.as_view()),
         name='task_list'
     ),
     path(
-        'tasks/<str:username>/<int:task_id>/',
+        '<str:username>tasks/<slug:slug>/',
         login_required(views.TaskDetailView.as_view()),
         name='task'
     ),
@@ -24,28 +33,28 @@ urlpatterns = [
         name='create_task'
     ),
     path(
-        'task/<int:task_id>/edit/',
+        'task/<slug:slug>/edit/',
         views.TaskUpdateView.as_view(),
         name='edit_task'
     ),
     path(
-        'task/<int:task_id>/done/',
+        'task/<slug:slug>/delete/',
+        login_required(views.TaskDeleteView.as_view()),
+        name='delete_task'
+    ),
+    path(
+        'task/<slug:slug>/done/',
         views.TaskDoneView.as_view(),
         name='task_done'
     ),
     path(
-        'create-category',
+        'create-category/',
         login_required(views.CreatCategoryView.as_view()),
         name='create_category'
     ),
     path(
-        'category/<slug:slug>/',
+        '<str:username>/category/<slug:slug>/',
         login_required(views.CategoryDetailView.as_view()),
         name='category'
     ),
-    path(
-        'tasks/filter/',
-        login_required(views.TaskFilterView.as_view()),
-        name='filter'
-    )
 ]

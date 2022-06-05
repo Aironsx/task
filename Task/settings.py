@@ -103,7 +103,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'tasks:task_list'
+LOGIN_REDIRECT_URL = 'tasks:index'
 
 REDIS_HOST = '0.0.0.0'
 REDIS_PORT = '6379'

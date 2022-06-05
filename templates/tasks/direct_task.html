@@ -11,9 +11,14 @@
             </div>
             <div class="card-body mb-2 my-lg-4 ">
               <p class="card-text">{{ task.description }}</p>
-              <a href="{% url 'tasks:edit_task' task.pk %}" class="btn
+              <a href="{% url 'tasks:edit_task' task.slug %}" class="btn
               btn-primary
               btn-dark">Edit</a>
+              <a href="{% url 'tasks:delete_task' task.slug %}" class="btn
+              btn-primary
+              btn-dark">Delete</a>
+              <a>
+              </a>
             </div>
           </div>
         </div>

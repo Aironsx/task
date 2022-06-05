@@ -47,10 +47,6 @@ class Task(models.Model):
         verbose_name='Activity type',
         related_name='task'
     )
-    is_regular = models.BooleanField(
-        verbose_name='Regular',
-        default=False
-    )
     is_done = models.BooleanField(
         null=False,
         default=False,
@@ -69,13 +65,26 @@ class Task(models.Model):
     due_date = models.DateTimeField(null=True, blank=True)
     coming_soon_task = models.BooleanField(default=False)
     delayed_task = models.BooleanField(default=False)
+    slug = models.SlugField()
 
     class Meta:
         verbose_name = 'Tasks'
         verbose_name_plural = 'Task'
+        constraints = [
+            models.UniqueConstraint(
+                fields=["author", "slug"],
+                name="unique_author_slug"
+            )
+        ]
 
     def __str__(self):
         return self.topic
 
     def get_absolute_url(self):
-        return reverse('tasks:task', kwargs={'task_id': self.pk})
+        return reverse('tasks:task', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.topic)
+        return super().save(*args, **kwargs)
+

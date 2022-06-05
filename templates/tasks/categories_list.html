@@ -7,19 +7,17 @@
       </div>
       <div class="col-sm-8 ">
         <div class="container">
-          {% for task in tasks %}
+          {% for category in categories %}
             <div class="card my-lg-4">
               <div class="card-header">
-                Task name: {{ task.topic }}
+                Task name: {{ category.name }}
               </div>
               <div class="card-body mb-2 my-lg-4 ">
-                <p class="card-text">
-                  {{ task.description|truncatewords:20 }}</p>
-
-                <a href="#" class="btn btn-primary btn-dark">Done</a>
-                <a href="{% url 'tasks:task' request.user.username task.slug%}" class="btn
+                <a href="
+{% url 'tasks:category' request.user.username category.slug%}"
+                   class="btn
                 btn-primary
-                btn-dark">Read</a>
+                btn-dark">All Task</a>
               </div>
             </div>
           {% endfor %}
