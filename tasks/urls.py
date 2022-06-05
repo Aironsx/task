@@ -23,7 +23,7 @@ urlpatterns = [
         name='task_list'
     ),
     path(
-        '<str:username>tasks/<slug:slug>/',
+        '<str:username>/tasks/<slug:slug>/',
         login_required(views.TaskDetailView.as_view()),
         name='task'
     ),
@@ -34,7 +34,7 @@ urlpatterns = [
     ),
     path(
         'task/<slug:slug>/edit/',
-        views.TaskUpdateView.as_view(),
+        login_required(views.TaskUpdateView.as_view()),
         name='edit_task'
     ),
     path(
@@ -48,7 +48,7 @@ urlpatterns = [
         name='task_done'
     ),
     path(
-        'create-category/',
+        'category/create',
         login_required(views.CreatCategoryView.as_view()),
         name='create_category'
     ),

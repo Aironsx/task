@@ -11,7 +11,12 @@ SECRET_KEY = os.getenv('Project_token')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
+]
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 INSTALLED_APPS = [
