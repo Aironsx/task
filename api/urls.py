@@ -1,10 +1,15 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from .views import TasksViewSet
+from .views import TasksViewSet, CategoryViewSet
 
 v1_router = routers.DefaultRouter()
 v1_tasks = v1_router.register('tasks', TasksViewSet, basename='tasks')
+v1_category = v1_router.register(
+    'category',
+    CategoryViewSet,
+    basename='category'
+)
 
 app_name = 'api'
 

@@ -32,9 +32,9 @@ class CategoryDetailView(ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self):
-        tasks = Task.objects.select_related('category').filter(
-            category__slug__contains=self.kwargs['slug'])
-        return tasks
+        return Task.objects.filter(author=self.request.user).select_related(
+            'category').filter(category__slug__iexact=self.kwargs['slug'],
+        )
 
 
 class TaskDetailView(ListView):
