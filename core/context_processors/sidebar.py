@@ -1,6 +1,4 @@
-from django.shortcuts import get_object_or_404
-
-from tasks.models import Task, Category
+from tasks.models import Category
 
 
 def category(request):

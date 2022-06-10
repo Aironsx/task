@@ -1,12 +1,12 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import (TemplateView, View, ListView, CreateView,
-                                  UpdateView, DeleteView)
+from django.views.generic import (DeleteView, ListView, TemplateView,
+                                  UpdateView, View)
 
 from .forms import CategoryForm, TaskForm
-from .models import Category, Task
 from .mixin import ObjectCreateMixin
+from .models import Category, Task
 
 
 class IndexView(TemplateView):
@@ -34,7 +34,7 @@ class CategoryDetailView(ListView):
     def get_queryset(self):
         return Task.objects.filter(author=self.request.user).select_related(
             'category').filter(category__slug__iexact=self.kwargs['slug'],
-        )
+                               )
 
 
 class TaskDetailView(ListView):

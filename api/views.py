@@ -1,8 +1,9 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
 
-from .serializer import TaskSerializer, CategorySerializer
-from tasks.models import Task, Category
+from tasks.models import Category, Task
+
 from .permissions import IsOwnerUpdate
+from .serializer import CategorySerializer, TaskSerializer
 
 
 class TasksViewSet(viewsets.ModelViewSet):
@@ -32,4 +33,3 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Category.objects.filter(author=self.request.user)
-

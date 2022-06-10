@@ -87,4 +87,3 @@ class Task(models.Model):
         if not self.slug:
             self.slug = slugify(self.topic)
         return super().save(*args, **kwargs)
-

@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 
-from ..models import Task, Category
+from ..models import Category, Task
 
 User = get_user_model()
 
@@ -45,7 +45,7 @@ class StaticPagesURLTest(TestCase):
             ),
             (f'/task/{cls.task.slug}/delete/',
              'tasks/confirm_task_delete.html'),
-            (f'/category/create', 'tasks/create_category.html'),
+            ('/category/create', 'tasks/create_category.html'),
             (
                 f'/{cls.user}/category/{cls.category.slug}/',
                 'tasks/task_by_category.html'
@@ -69,7 +69,6 @@ class StaticPagesURLTest(TestCase):
             with self.subTest(address=response):
                 response = self.guest_client.get(response)
                 self.assertEqual(response.status_code, HTTPStatus.FOUND)
-
 
     def test_unexist_url(self):
         response = self.guest_client.get(self.unexist_page)

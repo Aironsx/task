@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from tasks.models import Task, Category
+from tasks.models import Category, Task
 
 
 class CreatableSlugRelatedField(serializers.SlugRelatedField):
