@@ -10,6 +10,7 @@ ToDo is an app where people can add tasks and track them.
 - DB: sqlite + redis for celery task
 - Periodic task: celery + redis
 - html and css has been taken from bootstrap and adjusted in frame of project
+- docker, docker-compose
 
 ## Functionality
 
