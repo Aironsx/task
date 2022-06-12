@@ -13,6 +13,28 @@ services:
       - 8000:8000
     env_file:
       - ./.env
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+  celery:
+    build: ./
+    command: celery -A Task worker -l info
+    volumes:
+      - .:/usr/src/task
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+  celery-beat:
+    build: ./
+    command: celery -A Task beat -l info
+    volumes:
+      - .:/usr/src/task
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
 
 
 
