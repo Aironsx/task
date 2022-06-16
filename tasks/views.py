@@ -21,7 +21,8 @@ class TasksListView(ListView):
     model = Task
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'
-    queryset = Task.objects.filter(is_done=False).select_related('category')
+    queryset = Task.objects.filter(is_done=False).select_related(
+        'category')[::-1]
 
 
 class CategoryDetailView(ListView):
@@ -34,7 +35,7 @@ class CategoryDetailView(ListView):
     def get_queryset(self):
         return Task.objects.filter(author=self.request.user).select_related(
             'category').filter(category__slug__iexact=self.kwargs['slug'],
-                               )
+                               )[::-1]
 
 
 class TaskDetailView(ListView):
