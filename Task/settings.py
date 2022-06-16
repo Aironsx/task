@@ -8,6 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 SECRET_KEY = os.getenv('Project_token')
+email = os.getenv('Email')
+password = os.getenv('Password')
 
 DEBUG = int(os.getenv('DEBUG'))
 
@@ -121,6 +123,11 @@ CELERY_IMPORTS = ("tasks", )
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = email
+EMAIL_HOST_PASSWORD = password
 
 
 REST_FRAMEWORK = {
