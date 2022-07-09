@@ -11,12 +11,15 @@ class TasksViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerUpdate, permissions.IsAuthenticated)
 
     def get_queryset(self):
-        if self.request.query_params.get('is_done'):
-            return Task.objects.filter(author=self.request.user, is_done=True)
-        if self.request.query_params.get('coming_soon'):
+        if self.request.query_params.get('delayed_task'):
             return Task.objects.filter(
                 author=self.request.user,
-                coming_soon=True
+                delayed_task=True
+            )
+        if self.request.query_params.get('coming_soon_task'):
+            return Task.objects.filter(
+                author=self.request.user,
+                coming_soon_task=True
             )
         return Task.objects.filter(author=self.request.user, is_done=False)
 
