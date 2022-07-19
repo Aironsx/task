@@ -6,7 +6,7 @@ ToDo is an app where people can add tasks and track them.
 ## Applied technologies
 
 - Language: Python
-- Framework: Django
+- Frameworks: Django + DRF
 - DB: sqlite + redis for celery task
 - Periodic task: celery + redis
 - html and css has been taken from bootstrap and adjusted in frame of project
@@ -17,6 +17,11 @@ ToDo is an app where people can add tasks and track them.
 - App can follow your task up, in case due date is nearly it put tasks in 
   coming soon task or when it's overdued in delayed tasks.
 - User can add own category
+- API with jwt authentication
+
+## Next step
+
+- Telegram bot with all functionality (CRUD)
 
 ## Install
 
