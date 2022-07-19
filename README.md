@@ -52,3 +52,12 @@ python3 manage.py migrate
 ```
 python manage.py runserver
 ```
+```
+sudo docker run -p 6379:6379 --name some-redis -d redis
+```
+```
+celery -A Task worker -l info
+```
+```
+celery -A Task beat -l info
+```
