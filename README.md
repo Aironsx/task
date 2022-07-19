@@ -14,14 +14,15 @@ ToDo is an app where people can add tasks and track them.
 
 ## Functionality
 
+- All user registration tasks (signup, login, reset password)
 - App can follow your task up, in case due date is nearly it put tasks in 
   coming soon task or when it's overdued in delayed tasks.
-- User can add own category
 - API with jwt authentication
 
 ## Next step
 
 - Telegram bot with all functionality (CRUD)
+- Add possibility to send email directly to email
 
 ## Install
 
