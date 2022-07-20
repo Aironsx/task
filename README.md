@@ -2,6 +2,16 @@
 
 ToDo is an app where people can add tasks and track them.
 
+## Description and which porblem this app should solve
+
+### Problem statement:
+
+No task track app which is free and can posibility to use shared account. I like to use Joplin but to have account which i can use in laptop, PC , and mobile phone i should pay. So i dedicded to code my own one.
+
+### Description
+
+You can add category, tasks, the app will track your task and send notification to you if it's comming. There is an API which you can use. Also now i code telegram bot to people can post and get information from telegram directly. It's easy to use one platform(telegram) to track and add all.
+
 
 ## Applied technologies
 
